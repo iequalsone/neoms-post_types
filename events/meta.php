@@ -25,18 +25,18 @@ function show_additional_fields_meta_box()
     <p>
       <label for="additional_fields[text]">Input Text</label>
       <br>
-      <input type="text" name="additional_fields[text]" id="additional_fields[text]" class="regular-text" value="<?php echo $meta['text']; ?>">
+      <input type="text" name="additional_fields[text]" id="additional_fields[text]" class="regular-text" value="<?=(isset($meta['text']) ? $meta['text'] : '');?>">
     </p>
 
     <p>
       <label for="additional_fields[textarea]">Textarea</label>
       <br>
-      <textarea name="additional_fields[textarea]" id="additional_fields[textarea]" rows="5" cols="30" style="width:500px;"><?php echo $meta['textarea']; ?></textarea>
+      <textarea name="additional_fields[textarea]" id="additional_fields[textarea]" rows="5" cols="30" style="width:500px;"><?=(isset($meta['textarea']) ? $meta['textarea'] : '');?></textarea>
     </p>
 
     <p>
       <label for="additional_fields[checkbox]">Checkbox
-        <input type="checkbox" name="additional_fields[checkbox]" value="checkbox" <?php if ($meta['checkbox'] === 'checkbox') {
+        <input type="checkbox" name="additional_fields[checkbox]" value="checkbox" <?php if (isset($meta['checkbox']) && $meta['checkbox'] === 'checkbox') {
         echo 'checked';
     }
     ?>>
@@ -47,17 +47,17 @@ function show_additional_fields_meta_box()
       <label for="additional_fields[select]">Select Menu</label>
       <br>
       <select name="additional_fields[select]" id="additional_fields[select]">
-          <option value="option-one" <?php selected($meta['select'], 'option-one');?>>Option One</option>
-          <option value="option-two" <?php selected($meta['select'], 'option-two');?>>Option Two</option>
+          <option value="option-one" <?=(isset($meta['select']) ? selected($meta['select'], 'option-one') : '');?>>Option One</option>
+          <option value="option-two" <?=(isset($meta['select']) ? selected($meta['select'], 'option-two') : '');?>>Option Two</option>
       </select>
     </p>
 
     <p>
       <label for="additional_fields[image]">Image Upload</label><br>
-      <input type="text" name="additional_fields[image]" id="additional_fields[image]" class="meta-image regular-text" value="<?php echo $meta['image']; ?>">
+      <input type="text" name="additional_fields[image]" id="additional_fields[image]" class="meta-image regular-text" value="<?=(isset($meta['image']) ? $meta['image'] : '');?>">
       <input type="button" class="button image-upload" value="Browse">
     </p>
-    <div class="image-preview"><img src="<?php echo $meta['image']; ?>" style="max-width: 250px;"></div>
+    <div class="image-preview"><img src="<?=(isset($meta['image']) ? $meta['image'] : '');?>" style="max-width: 250px;"></div>
     <script>
       jQuery(document).ready(function ($) {
         // Instantiates the variable that holds the media library frame.
@@ -99,7 +99,7 @@ function show_additional_fields_meta_box()
 function save_additional_fields_meta($post_id)
 {
     // verify nonce
-    if (!wp_verify_nonce($_POST['additional_fields_nonce'], basename(__FILE__))) {
+    if (isset($_POST['additional_fields_nonce']) && !wp_verify_nonce($_POST['additional_fields_nonce'], basename(__FILE__))) {
         return $post_id;
     }
     // check autosave
@@ -107,7 +107,7 @@ function save_additional_fields_meta($post_id)
         return $post_id;
     }
     // check permissions
-    if ('page' === $_POST['post_type']) {
+    if (isset($_POST['post_type']) && 'page' === $_POST['post_type']) {
         if (!current_user_can('edit_page', $post_id)) {
             return $post_id;
         } elseif (!current_user_can('edit_post', $post_id)) {
@@ -116,7 +116,7 @@ function save_additional_fields_meta($post_id)
     }
 
     $old = get_post_meta($post_id, 'additional_fields', true);
-    $new = $_POST['additional_fields'];
+    $new = (isset($_POST['additional_fields']) ? $_POST['additional_fields'] : '');
 
     if ($new && $new !== $old) {
         update_post_meta($post_id, 'additional_fields', $new);
