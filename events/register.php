@@ -5,10 +5,11 @@ function register_naoems_events_post_type()
     register_post_type('neoms-events',
         [
             'labels' => [
-                'name' => 'Events',
-                'menu_name' => 'Event Manager',
-                'singular_name' => 'Event',
-                'all_items' => 'All Events',
+                'name' => __('Events', 'neoms_theme'),
+                'menu_name' => __('Event Manager', 'neoms_theme'),
+                'singular_name' => __('Event', 'neoms_theme'),
+                'all_items' => __('All Events', 'neoms_theme'),
+                'add_new_item' => __('Add New Event', 'neoms_theme'),
             ],
             'public' => true,
             'publicly_queryable' => true,
@@ -19,16 +20,16 @@ function register_naoems_events_post_type()
             'hierarchical' => false,
             'has_archive' => 'events',
             'taxonomies' => ['event-category'],
-            'rewrite' => ['slug' => 'events/%event_category%', 'hierarchical' => true, 'with_front' => false],
+            'rewrite' => ['slug' => 'events', 'hierarchical' => true, 'with_front' => false],
         ]
     );
     register_taxonomy('event-category', ['neoms-events'],
         [
             'labels' => [
-                'name' => 'Event Categories',
-                'menu_name' => 'Event Categories',
-                'singular_name' => 'Event Category',
-                'all_items' => 'All Categories',
+                'name' => __('Event Categories', 'neoms_theme'),
+                'menu_name' => __('Event Categories', 'neoms_theme'),
+                'singular_name' => __('Event Category', 'neoms_theme'),
+                'all_items' => __('All Categories', 'neoms_theme'),
             ],
             'public' => true,
             'hierarchical' => true,
@@ -43,10 +44,14 @@ function register_event_rewrite_rules($wp_rewrite)
 {
     $new_rules = array(
         'events/([^/]+)/?$' => 'index.php?event-category=' . $wp_rewrite->preg_index(1), // 'events/any-character/'
-        'products/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(1) . '&neoms-events=' . $wp_rewrite->preg_index(2), // 'events/any-character/post-slug/'
-        'products/([^/]+)/([^/]+)/page/(\d{1,})/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(1) . '&paged=' . $wp_rewrite->preg_index(3), // match paginated results for a sub-category archive
-        'events/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(2) . '&neoms-events=' . $wp_rewrite->preg_index(3), // 'events/any-character/sub-category/post-slug/'
-        'events/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(3) . '&neoms-events=' . $wp_rewrite->preg_index(4), // 'events/any-character/sub-category/sub-sub-category/post-slug/'
+        'events/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(1) . '&neoms-events=' . $wp_rewrite->preg_index(2),
+        // 'events/any-character/post-slug/'
+        'products/([^/]+)/([^/]+)/page/(\d{1,})/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(1) . '&paged=' . $wp_rewrite->preg_index(3),
+        // match paginated results for a sub-category archive
+        'events/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(2) . '&neoms-events=' . $wp_rewrite->preg_index(3),
+        // 'events/any-character/sub-category/post-slug/'
+        'events/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=neoms-events&event-category=' . $wp_rewrite->preg_index(3) . '&neoms-events=' . $wp_rewrite->preg_index(4),
+        // 'events/any-character/sub-category/sub-sub-category/post-slug/'
     );
     $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 }
