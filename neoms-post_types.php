@@ -6,4 +6,5 @@
  * Author: Jon
  */
 
-include plugin_dir_path(__FILE__) . 'events/index.php';
+include plugin_dir_path(__FILE__) . 'events/register.php';
+include plugin_dir_path(__FILE__) . 'events/meta.php';
