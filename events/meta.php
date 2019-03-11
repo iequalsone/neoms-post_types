@@ -1,5 +1,5 @@
 <?php
-function additional_fields_meta_box()
+function add_additional_fields_meta_box()
 {
     add_meta_box(
         'additional_fields_meta_box', // $id
