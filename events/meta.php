@@ -1,79 +1,96 @@
 <?php
-function add_additional_fields_meta_box()
+function add_event_fields_meta_box()
 {
     add_meta_box(
-        'additional_fields_meta_box', // $id
+        'event_fields_meta_box', // $id
         'Additional Fields', // $title
-        'show_additional_fields_meta_box', // $callback
+        'show_event_fields_meta_box', // $callback
         'events', // $screen
         'normal', // $context
         'high' // $priority
     );
 }
-add_action('add_meta_boxes', 'add_additional_fields_meta_box');
+add_action('add_meta_boxes', 'add_event_fields_meta_box');
 
-function show_additional_fields_meta_box()
+function show_event_fields_meta_box()
 {
     global $post;
-    $meta = get_post_meta($post->ID, 'additional_fields', true);?>
+    $meta = get_post_meta($post->ID, 'event_fields', true);?>
 
   <input
     type="hidden"
-    name="additional_fields_nonce"
+    name="event_fields_nonce"
     value="<?php echo wp_create_nonce(basename(__FILE__)); ?>">
 
-    <p>
-      <label for="additional_fields[text]">Input Text</label>
-      <br>
+    <?=generate_input_field(
+        'event_fields',
+        'sub_title',
+        'Sub-title',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'start_date',
+        'Start Date',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'end_date',
+        'End Date',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'time',
+        'Time',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'location',
+        'Location',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'ticket_cost',
+        'Ticket Cost',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'website',
+        'Website',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_input_field(
+        'event_fields',
+        'floating_tag',
+        'Floating Tag',
+        'regular-text',
+        $meta);?>
+
+    <?=generate_image_field(
+        'event_fields',
+        'event_image',
+        'Event Image',
+        'meta-image regular-text',
+        $meta);?>
+
+    <!-- <p>
+      <label for="event_fields[image]">Image Upload</label><br>
       <input
         type="text"
-        name="additional_fields[text]"
-        id="additional_fields[text]"
-        class="regular-text"
-        value="<?=(isset($meta['text']) ? $meta['text'] : '');?>">
-    </p>
-
-    <p>
-      <label for="additional_fields[textarea]">Textarea</label>
-      <br>
-      <textarea
-        name="additional_fields[textarea]"
-        id="additional_fields[textarea]"
-        rows="5"
-        cols="30"
-        style="width:500px;"><?=(isset($meta['textarea']) ? $meta['textarea'] : '');?></textarea>
-    </p>
-
-    <p>
-      <label for="additional_fields[checkbox]">Checkbox
-        <input
-          type="checkbox"
-          name="additional_fields[checkbox]"
-          value="checkbox"
-          <?=((isset($meta['checkbox']) && $meta['checkbox'] === 'checkbox') ? 'checked' : '')?>
-        >
-      </label>
-    </p>
-
-    <p>
-      <label for="additional_fields[select]">Select Menu</label>
-      <br>
-      <select name="additional_fields[select]" id="additional_fields[select]">
-          <option
-            value="option-one"
-            <?=(isset($meta['select']) ? selected($meta['select'], 'option-one') : '');?>>Option One</option>
-          <option
-            value="option-two"
-            <?=(isset($meta['select']) ? selected($meta['select'], 'option-two') : '');?>>Option Two</option>
-      </select>
-    </p>
-
-    <p>
-      <label for="additional_fields[image]">Image Upload</label><br>
-      <input
-        type="text"
-        name="additional_fields[image]"
-        id="additional_fields[image]"
+        name="event_fields[image]"
+        id="event_fields[image]"
         class="meta-image regular-text"
         value="<?=(isset($meta['image']) ? $meta['image'] : '');?>">
       <input
@@ -85,49 +102,94 @@ function show_additional_fields_meta_box()
       <img
         src="<?=(isset($meta['image']) ? $meta['image'] : '');?>"
         style="max-width: 250px;"
-    ></div>
-    <script>
-      jQuery(document).ready(function ($) {
-        // Instantiates the variable that holds the media library frame.
-        var meta_image_frame;
-        // Runs when the image button is clicked.
-        $('.image-upload').click(function (e) {
-          // Get preview pane
-          var meta_image_preview = $(this).parent().parent().children('.image-preview');
-          // Prevents the default action from occuring.
-          e.preventDefault();
-          var meta_image = $(this).parent().children('.meta-image');
-          // If the frame already exists, re-open it.
-          if (meta_image_frame) {
-            meta_image_frame.open();
-            return;
-          }
-          // Sets up the media library frame
-          meta_image_frame = wp.media.frames.meta_image_frame = wp.media({
-            title: meta_image.title,
-            button: {
-              text: meta_image.button
-            }
-          });
-          // Runs when an image is selected.
-          meta_image_frame.on('select', function () {
-            // Grabs the attachment selection and creates a JSON representation of the model.
-            var media_attachment = meta_image_frame.state().get('selection').first().toJSON();
-            // Sends the attachment URL to our custom image input field.
-            meta_image.val(media_attachment.url);
-            meta_image_preview.children('img').attr('src', media_attachment.url);
-          });
-          // Opens the media library frame.
-          meta_image_frame.open();
-        });
-      });
-    </script>
-  <?php }
+    ></div> -->
 
-function save_additional_fields_meta($post_id)
+    <!-- <p>
+      <label for="event_fields[textarea]">Textarea</label>
+      <br>
+      <textarea
+        name="event_fields[textarea]"
+        id="event_fields[textarea]"
+        rows="5"
+        cols="30"
+        style="width:500px;"><?=(isset($meta['textarea']) ? $meta['textarea'] : '');?></textarea>
+    </p> -->
+
+    <!-- <p>
+      <label for="event_fields[checkbox]">Checkbox
+        <input
+          type="checkbox"
+          name="event_fields[checkbox]"
+          value="checkbox"
+          <?=((isset($meta['checkbox']) && $meta['checkbox'] === 'checkbox') ? 'checked' : '')?>
+        >
+      </label>
+    </p> -->
+
+    <!-- <p>
+      <label for="event_fields[select]">Select Menu</label>
+      <br>
+      <select name="event_fields[select]" id="event_fields[select]">
+          <option
+            value="option-one"
+            <?=(isset($meta['select']) ? selected($meta['select'], 'option-one') : '');?>>Option One</option>
+          <option
+            value="option-two"
+            <?=(isset($meta['select']) ? selected($meta['select'], 'option-two') : '');?>>Option Two</option>
+      </select>
+    </p> -->
+  <?php
+wp_enqueue_script('meta_image', plugin_dir_url(__FILE__) . '/src/js/meta_image.js');
+}
+
+function generate_input_field($field_arr, $field_name, $field_label, $class, $meta)
+{
+    $output =
+        '<p>
+      <label for="' . $field_arr . '[' . $field_name . ']">' . $field_label . '</label>
+      <br>
+      <input
+        type="text"
+        name="' . $field_arr . '[' . $field_name . ']"
+        id="' . $field_arr . '[' . $field_name . ']"
+        class="' . $class . '"
+        value="' . (isset($meta[$field_name]) ? $meta[$field_name] : '') . '">
+    </p>';
+    return $output;
+}
+
+function generate_image_field($field_arr, $field_name, $field_label, $class, $meta)
+{
+    $output =
+        '<div>
+          <p>
+            <label for="' . $field_arr . '[' . $field_name . ']">Image Upload</label><br>
+            <input
+              type="text"
+              name="' . $field_arr . '[' . $field_name . ']"
+              id="' . $field_arr . '[' . $field_name . ']"
+              class="' . $class . '"
+              value="' . (isset($meta[$field_name]) ? $meta[$field_name] : '') . '">
+            <input
+              type="button"
+              class="button image-upload"
+              value="Browse">
+          </p>
+
+          <div class="image-preview">
+            <img
+              src="' . (isset($meta[$field_name]) ? $meta[$field_name] : '') . '"
+              style="max-width: 250px;"
+          ></div>
+        </div>
+        ';
+    return $output;
+}
+
+function save_event_fields_meta($post_id)
 {
     // verify nonce
-    if (isset($_POST['additional_fields_nonce']) && !wp_verify_nonce($_POST['additional_fields_nonce'], basename(__FILE__))) {
+    if (isset($_POST['event_fields_nonce']) && !wp_verify_nonce($_POST['event_fields_nonce'], basename(__FILE__))) {
         return $post_id;
     }
     // check autosave
@@ -143,13 +205,13 @@ function save_additional_fields_meta($post_id)
         }
     }
 
-    $old = get_post_meta($post_id, 'additional_fields', true);
-    $new = (isset($_POST['additional_fields']) ? $_POST['additional_fields'] : '');
+    $old = get_post_meta($post_id, 'event_fields', true);
+    $new = (isset($_POST['event_fields']) ? $_POST['event_fields'] : '');
 
     if ($new && $new !== $old) {
-        update_post_meta($post_id, 'additional_fields', $new);
+        update_post_meta($post_id, 'event_fields', $new);
     } elseif ('' === $new && $old) {
-        delete_post_meta($post_id, 'additional_fields', $old);
+        delete_post_meta($post_id, 'event_fields', $old);
     }
 }
-add_action('save_post', 'save_additional_fields_meta');
+add_action('save_post', 'save_event_fields_meta');
