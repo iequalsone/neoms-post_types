@@ -1,0 +1,10 @@
+{
+  "name": "iequalsone/neoms-post_types",
+  "description": "Custom post types",
+  "keywords": [
+    "wordpress",
+    "blog",
+    "cms"
+  ],
+  "type": "wordpress-plugin"
+}
