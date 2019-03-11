@@ -5,10 +5,10 @@ function register_naoems_events_post_type()
     register_post_type('neoms-events',
         [
             'labels' => [
-                'name' => 'Products',
-                'menu_name' => 'Product Manager',
-                'singular_name' => 'Product',
-                'all_items' => 'All Products',
+                'name' => 'Events',
+                'menu_name' => 'Event Manager',
+                'singular_name' => 'Event',
+                'all_items' => 'All Events',
             ],
             'public' => true,
             'publicly_queryable' => true,
