@@ -14,7 +14,7 @@ function register_events_post_type()
             'hierarchical' => true,
             'show_ui' => true,
             'rewrite' => [
-                'slug' => 'events',
+                'slug' => 'event-category',
                 'hierarchical' => true,
                 'with_front' => false,
             ],
@@ -40,7 +40,7 @@ function register_events_post_type()
             'has_archive' => true,
             'taxonomies' => ['event-category'],
             'rewrite' => [
-                'slug' => 'events/%event-category%',
+                'slug' => 'event',
                 'hierarchical' => true,
                 'with_front' => false,
             ],
@@ -52,20 +52,8 @@ add_action('generate_rewrite_rules', 'register_event_rewrite_rules');
 function register_event_rewrite_rules($wp_rewrite)
 {
     $new_rules = array(
-        // 'events/any-character/'
-        'events/([^/]+)/?$' => 'index.php?event-category=' . $wp_rewrite->preg_index(1),
-
-        // 'events/any-character/post-slug/'
-        'events/([^/]+)/([^/]+)/?$' => 'index.php?post_type=events&event-category=' . $wp_rewrite->preg_index(1) . '&events=' . $wp_rewrite->preg_index(2),
-
-        // match paginated results for a sub-category archive
-        'events/([^/]+)/([^/]+)/page/(\d{1,})/?$' => 'index.php?post_type=events&event-category=' . $wp_rewrite->preg_index(1) . '&paged=' . $wp_rewrite->preg_index(3),
-
-        // 'events/any-character/sub-category/post-slug/'
-        'events/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=events&event-category=' . $wp_rewrite->preg_index(2) . '&events=' . $wp_rewrite->preg_index(3),
-
-        // 'events/any-character/sub-category/sub-sub-category/post-slug/'
-        'events/([^/]+)/([^/]+)/([^/]+)/([^/]+)/?$' => 'index.php?post_type=events&event-category=' . $wp_rewrite->preg_index(3) . '&events=' . $wp_rewrite->preg_index(4),
+      'event/([^/]+)/?$' => 'index.php?post_type=events&events=' . $wp_rewrite->preg_index(1),
+      'event-category/([^/]+)/?$' => 'index.php?event-category=' . $wp_rewrite->preg_index(1),
     );
     $wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 }
